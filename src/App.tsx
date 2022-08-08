@@ -23,6 +23,8 @@ const App: React.FC = () => {
     },
   ])
 
+  const [search, setSearch] = useState('')
+
   const handleArchive = (id: number) => {
     setNotes((notes) =>
       notes.map((note) =>
@@ -48,7 +50,7 @@ const App: React.FC = () => {
   }
 
   return (
-    <div className='font-inter'>
+    <div className='bg-zinc-10 font-inter'>
       <nav className='flex items-center bg-slate-300 p-4'>
         <h1 className='text-2xl font-bold'>Notes</h1>
         {location.pathname === '/' ? (
@@ -66,12 +68,34 @@ const App: React.FC = () => {
         )}
       </nav>
       <NoteForm handleSubmit={handleSubmit} />
+      <input
+        onChange={(e) => setSearch(e.target.value)}
+        value={search}
+        className='my-2 block w-full bg-slate-300 p-4 text-lg placeholder:text-slate-700 focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-slate-700'
+        placeholder={
+          (location.pathname === '/' ? 'Notes.' : 'Archived Notes.') +
+          ' Click here to search'
+        }
+      />
       <Routes>
         <Route
           path='/'
           element={
             <NotesList
-              notes={notes.filter((note) => !note.archived)}
+              notes={
+                search
+                  ? notes.filter(
+                      (note) =>
+                        !note.archived &&
+                        (note.title
+                          .toLowerCase()
+                          .includes(search.toLowerCase()) ||
+                          note.body
+                            .toLowerCase()
+                            .includes(search.toLowerCase()))
+                    )
+                  : notes.filter((note) => !note.archived)
+              }
               handleDelete={handleDelete}
               handleArchive={handleArchive}
               className='p-4'
@@ -82,7 +106,20 @@ const App: React.FC = () => {
           path='/archived'
           element={
             <NotesList
-              notes={notes.filter((note) => note.archived)}
+              notes={
+                search
+                  ? notes.filter(
+                      (note) =>
+                        note.archived &&
+                        (note.title
+                          .toLowerCase()
+                          .includes(search.toLowerCase()) ||
+                          note.body
+                            .toLowerCase()
+                            .includes(search.toLowerCase()))
+                    )
+                  : notes.filter((note) => note.archived)
+              }
               handleDelete={handleDelete}
               handleArchive={handleArchive}
               className='p-4'
