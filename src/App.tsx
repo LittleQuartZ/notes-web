@@ -1,9 +1,11 @@
 import { useState } from 'react'
+import { Link, Route, Routes, useLocation } from 'react-router-dom'
 import NoteForm from './components/NoteForm'
 import NotesList from './components/NotesList'
 import { NoteModel } from './model/Note'
 
 const App: React.FC = () => {
+  const location = useLocation()
   const [notes, setNotes] = useState<NoteModel[]>([
     {
       id: 1,
@@ -17,7 +19,7 @@ const App: React.FC = () => {
       title: 'Typescriptaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
       body: 'Typescript is a typed superset of JavaScript that compiles to plain JavaScript. In Typescript you can use data types',
       createdAt: new Date(),
-      archived: false,
+      archived: true,
     },
   ])
 
@@ -47,16 +49,47 @@ const App: React.FC = () => {
 
   return (
     <div className='font-inter'>
-      <nav>
-        <h1 className='bg-slate-300 p-4 text-2xl font-bold'>Notes</h1>
+      <nav className='flex items-center bg-slate-300 p-4'>
+        <h1 className='text-2xl font-bold'>Notes</h1>
+        {location.pathname === '/' ? (
+          <Link
+            className='ml-auto rounded-md bg-slate-400 px-4 py-2 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-slate-700'
+            to='/archived'>
+            Archived
+          </Link>
+        ) : (
+          <Link
+            className='ml-auto rounded-md bg-slate-400 px-4 py-2 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-slate-700'
+            to='/'>
+            Home
+          </Link>
+        )}
       </nav>
       <NoteForm handleSubmit={handleSubmit} />
-      <NotesList
-        notes={notes}
-        handleDelete={handleDelete}
-        handleArchive={handleArchive}
-        className='p-4'
-      />
+      <Routes>
+        <Route
+          path='/'
+          element={
+            <NotesList
+              notes={notes.filter((note) => !note.archived)}
+              handleDelete={handleDelete}
+              handleArchive={handleArchive}
+              className='p-4'
+            />
+          }
+        />
+        <Route
+          path='/archived'
+          element={
+            <NotesList
+              notes={notes.filter((note) => note.archived)}
+              handleDelete={handleDelete}
+              handleArchive={handleArchive}
+              className='p-4'
+            />
+          }
+        />
+      </Routes>
     </div>
   )
 }
