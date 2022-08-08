@@ -16,14 +16,18 @@ const NotesList: React.FC<Props> = ({
 }) => {
   return (
     <div className={`flex flex-col gap-4 ${className}`}>
-      {notes.map((note) => (
-        <Note
-          key={note.id}
-          note={note}
-          handleDelete={handleDelete}
-          handleArchive={handleArchive}
-        />
-      ))}
+      {notes.length > 0 ? (
+        notes.map((note) => (
+          <Note
+            key={note.id}
+            note={note}
+            handleDelete={handleDelete}
+            handleArchive={handleArchive}
+          />
+        ))
+      ) : (
+        <h2 className='text-center text-2xl opacity-50'>No notes found. 🙁</h2>
+      )}
     </div>
   )
 }
