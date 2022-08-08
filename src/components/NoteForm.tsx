@@ -25,7 +25,7 @@ const NoteForm: React.FC<Props> = ({ handleSubmit }) => {
       className='flex flex-col gap-4 p-4'>
       <div className='relative'>
         <input
-          className='w-full rounded-md bg-slate-200 p-4 ring-2 placeholder:text-slate-500 focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-slate-500'
+          className='w-full rounded-md bg-slate-200 p-4 ring-2 transition placeholder:text-slate-500 focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-slate-500'
           type='text'
           placeholder='insert note&#39;s title'
           value={title}
@@ -42,7 +42,7 @@ const NoteForm: React.FC<Props> = ({ handleSubmit }) => {
         </label>
       </div>
       <input
-        className='rounded-md bg-slate-200 p-4 ring-2 placeholder:text-slate-500 focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-slate-500'
+        className='rounded-md bg-slate-200 p-4 ring-2 transition placeholder:text-slate-500 focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-slate-500'
         type='text'
         placeholder='insert note&#39;s body'
         value={body}
