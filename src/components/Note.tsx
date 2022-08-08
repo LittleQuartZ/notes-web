@@ -20,7 +20,7 @@ const Note: React.FC<Props> = ({ note, handleArchive, handleDelete }) => {
       </header>
       <section className='p-4'>
         <p className='text-ellipsis text-slate-900'>{body}</p>
-        <span className='text-sm text-slate-500'>
+        <p className='mt-2 text-right text-sm text-slate-500'>
           {createdAt.toLocaleString('en-US', {
             weekday: 'long',
             day: 'numeric',
@@ -28,7 +28,7 @@ const Note: React.FC<Props> = ({ note, handleArchive, handleDelete }) => {
             hour: 'numeric',
             minute: 'numeric',
           })}
-        </span>
+        </p>
       </section>
       <section className='flex items-center'>
         <NoteButton
