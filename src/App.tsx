@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, Route, Routes, useLocation } from 'react-router-dom'
 import NoteForm from './components/NoteForm'
 import NotesList from './components/NotesList'
@@ -6,23 +6,7 @@ import { NoteModel } from './model/Note'
 
 const App: React.FC = () => {
   const location = useLocation()
-  const [notes, setNotes] = useState<NoteModel[]>([
-    {
-      id: 1,
-      title: 'Typescript',
-      body: 'Typescript is a typed superset of JavaScript that compiles to plain JavaScript. In Typescript you can use data types',
-      createdAt: new Date(),
-      archived: false,
-    },
-    {
-      id: 2,
-      title: 'Typescriptaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
-      body: 'Typescript is a typed superset of JavaScript that compiles to plain JavaScript. In Typescript you can use data types',
-      createdAt: new Date(),
-      archived: true,
-    },
-  ])
-
+  const [notes, setNotes] = useState<NoteModel[]>([])
   const [search, setSearch] = useState('')
 
   const handleArchive = (id: number) => {
@@ -48,6 +32,24 @@ const App: React.FC = () => {
 
     setNotes((notes) => [...notes, newNote])
   }
+
+  useEffect(() => {
+    const response = localStorage.getItem('notes')
+    if (response) {
+      const savedNotes = JSON.parse(response) as NoteModel[]
+      savedNotes.map((note) => {
+        note.createdAt = new Date(note.createdAt)
+        return note
+      })
+      setNotes(savedNotes)
+    } else {
+      localStorage.setItem('notes', JSON.stringify(notes))
+    }
+  }, [])
+
+  useEffect(() => {
+    localStorage.setItem('notes', JSON.stringify(notes))
+  }, [notes])
 
   return (
     <div className='bg-zinc-10 font-inter'>
